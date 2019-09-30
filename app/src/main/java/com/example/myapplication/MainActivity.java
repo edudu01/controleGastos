@@ -11,10 +11,18 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EditText descricao;
+    private EditText valor;
+    private EditText data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        descricao = (EditText) findViewById(R.id.editText);
+        valor = (EditText) findViewById((R.id.editText2));
+        data = (EditText) findViewById(R.id.editText3);
 
         Button botao = (Button) findViewById(R.id.button);
         Button listar = (Button) findViewById(R.id.button2);
@@ -22,18 +30,24 @@ public class MainActivity extends AppCompatActivity {
         botao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BancoController crud = new BancoController(getBaseContext());
-                EditText titulo = (EditText) findViewById(R.id.editText);
-                EditText autor = (EditText) findViewById((R.id.editText2));
-                EditText editora = (EditText) findViewById(R.id.editText3);
-                String tituloString = titulo.getText().toString();
-                String autorString = autor.getText().toString();
-                String editoraString = editora.getText().toString();
-                String resultado;
+                if (descricao.getText().toString().trim().equals("")
+                    || valor.getText().toString().trim().equals("")
+                    || data.getText().toString().trim().equals("")){
 
-                resultado = crud.insereDado(tituloString, autorString, editoraString);
+                    Toast.makeText(MainActivity.this, "Preencha todos os campos!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    BancoController crud = new BancoController(getBaseContext());
 
-                Toast.makeText(getApplicationContext(), resultado, Toast.LENGTH_LONG).show();
+                    String tituloString = descricao.getText().toString();
+                    String autorString = valor.getText().toString();
+                    String editoraString = data.getText().toString();
+                    String resultado;
+
+                    resultado = crud.insereDado(tituloString, autorString, editoraString);
+
+                    Toast.makeText(getApplicationContext(), resultado, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
